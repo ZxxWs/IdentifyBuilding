@@ -1,0 +1,91 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'train.ui'
+#
+# Created by: PyQt5 UI code generator 5.9.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_Train(object):
+    def setupUi(self, Train):
+        Train.setObjectName("Train")
+        Train.resize(746, 585)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(Train)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.label = QtWidgets.QLabel(Train)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_2 = QtWidgets.QLabel(Train)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout_2.addWidget(self.label_2)
+        self.comboBox = QtWidgets.QComboBox(Train)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.horizontalLayout_2.addWidget(self.comboBox)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.pushButton_2 = QtWidgets.QPushButton(Train)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_3.addWidget(self.pushButton_2)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout.addLayout(self.verticalLayout_4)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem1)
+        self.pushButton = QtWidgets.QPushButton(Train)
+        self.pushButton.setObjectName("pushButton")
+        self.verticalLayout_2.addWidget(self.pushButton)
+        self.horizontalLayout.addLayout(self.verticalLayout_2)
+        self.horizontalLayout.setStretch(0, 3)
+        self.horizontalLayout.setStretch(1, 1)
+        self.horizontalLayout.setStretch(2, 1)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.verticalLayout.setStretch(0, 2)
+        self.verticalLayout.setStretch(1, 1)
+        self.verticalLayout_3.addLayout(self.verticalLayout)
+
+        self.retranslateUi(Train)
+        QtCore.QMetaObject.connectSlotsByName(Train)
+
+    def retranslateUi(self, Train):
+        _translate = QtCore.QCoreApplication.translate
+        Train.setWindowTitle(_translate("Train", "训练模型"))
+        self.label.setText(_translate("Train", "TextLabel"))
+        self.label_2.setText(_translate("Train", "Batch:"))
+        self.comboBox.setItemText(0, _translate("Train", "1"))
+        self.comboBox.setItemText(1, _translate("Train", "2"))
+        self.comboBox.setItemText(2, _translate("Train", "4"))
+        self.comboBox.setItemText(3, _translate("Train", "6"))
+        self.comboBox.setItemText(4, _translate("Train", "8"))
+        self.comboBox.setItemText(5, _translate("Train", "16"))
+        self.comboBox.setItemText(6, _translate("Train", "32"))
+        self.comboBox.setItemText(7, _translate("Train", "64"))
+        self.pushButton_2.setText(_translate("Train", "PushButton"))
+        self.pushButton.setText(_translate("Train", "PushButton"))
+
