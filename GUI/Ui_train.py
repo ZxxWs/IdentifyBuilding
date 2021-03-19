@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Train(object):
     def setupUi(self, Train):
         Train.setObjectName("Train")
-        Train.resize(746, 585)
+        Train.resize(1000, 800)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(Train)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.verticalLayout = QtWidgets.QVBoxLayout()

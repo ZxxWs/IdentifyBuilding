@@ -42,11 +42,27 @@ def getBatch(path):
 
 if __name__ == '__main__':
     a = File()
-    dic = a.cfgRead()
+    # dic = a.cfgRead()
 
-    a=getBatch(dic['cfg'])
-    print(a)
+    # a=getBatch(dic['cfg'])
+    # print(a)
     # RunDarknet(dic,image)
+
+    # dirs=r"C:\Users\zxxw\Desktop\A\\"
+    # if not os.path.exists(dirs):
+    #     os.makedirs(dirs)
+
+    # with open(filepath,'w') as file:
+    #     file.write("sdagag")
+
+    # a=File.getMarkNames("")
+    # print(a)
+    a=['as']
+    # a[1]=234
+    # print(a)
+    # for i in range(10,0,1)
+
+
     pass
 
 

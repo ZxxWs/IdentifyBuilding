@@ -1,7 +1,7 @@
-from PyQt5.QtCore import pyqtSlot
+# from PyQt5 import Qt
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QHeaderView, QTableWidgetItem, QPushButton, QFileDialog
-from PyQt5.uic.properties import QtWidgets, QtCore
-
 from Code.File import File
 from GUI.Ui_configurate import Ui_Configurate
 
@@ -15,6 +15,8 @@ class Configurate(QDialog, Ui_Configurate):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
+        self.__setUIStyle()
+
 
         # 读取文件配置信息
         self.__cfgfile = File()
@@ -39,6 +41,7 @@ class Configurate(QDialog, Ui_Configurate):
     # 填充表格内容
     def __fillTable(self):
 
+        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
 
@@ -53,7 +56,9 @@ class Configurate(QDialog, Ui_Configurate):
             self.tableWidget.setVerticalHeaderItem(i, itemLable)
 
             # 添加按钮
-            button = QPushButton("-")
+            button = QPushButton()
+
+            button.setIcon(QIcon("ArtRes/file.png"))
             button.clicked.connect(self.button_clicked)
             self.tableWidget.setCellWidget(i, 1, button)
             i += 1
@@ -81,3 +86,13 @@ class Configurate(QDialog, Ui_Configurate):
 
         item = QTableWidgetItem(str(filePath))
         self.tableWidget.setItem(row, 0, item)
+
+    def __setUIStyle(self):
+
+
+        self.setWindowModality(Qt.ApplicationModal)#设置其他界面不可点击
+
+        self.setWindowIcon(QIcon('ArtRes/setting.png'))
+        self.setStyleSheet(
+                           "QDialog{background-image:url(ArtRes/backgroudCfg.jpg)}"
+                           )

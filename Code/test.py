@@ -1,7 +1,8 @@
 import os
 import PyQt5
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog
 from Code.File import File
 from GUI.Ui_test import Ui_Test
@@ -55,3 +56,12 @@ class Test(QDialog, Ui_Test):
 
     def closeEvent(self, a0: PyQt5.QtGui.QCloseEvent) -> None:
         self.parent().show()
+
+
+
+
+    def __setUIStyle(self):
+
+        self.setWindowIcon(QIcon('ArtRes/mark.png'))
+
+        self.setWindowState(Qt.WindowMaximized)

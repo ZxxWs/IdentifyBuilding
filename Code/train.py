@@ -1,7 +1,8 @@
 import os
 
 from PyQt5 import QtGui
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog
 
 from Code.File import File
@@ -63,3 +64,9 @@ class Train(QDialog, Ui_Train):
 
 
 
+
+    def __setUIStyle(self):
+
+        self.setWindowIcon(QIcon('ArtRes/mark.png'))
+
+        self.setWindowState(Qt.WindowMaximized)

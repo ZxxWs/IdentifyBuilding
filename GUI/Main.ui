@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>702</width>
-    <height>526</height>
+    <width>1000</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>建筑物识别</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -31,7 +34,7 @@
        </spacer>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,1">
+       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="5,4">
         <item>
          <widget class="QPushButton" name="pushButtonMark">
           <property name="sizePolicy">
@@ -42,6 +45,12 @@
           </property>
           <property name="text">
            <string>标注</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -74,7 +83,7 @@
        </spacer>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,4">
         <item>
          <widget class="QPushButton" name="pushButtonTrain">
           <property name="sizePolicy">
@@ -85,6 +94,12 @@
           </property>
           <property name="text">
            <string>训练</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -117,7 +132,7 @@
        </spacer>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,4">
         <item>
          <widget class="QPushButton" name="pushButtonTest">
           <property name="sizePolicy">
@@ -134,6 +149,12 @@
           </property>
           <property name="text">
            <string>测试</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -174,7 +195,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>702</width>
+     <width>1000</width>
      <height>26</height>
     </rect>
    </property>

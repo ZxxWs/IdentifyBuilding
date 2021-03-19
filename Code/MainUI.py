@@ -1,5 +1,8 @@
-from PyQt5.QtCore import pyqtSlot
+# from PyQt5 import Qt, QtCore
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QMainWindow
+
 
 from GUI.Ui_Main import Ui_MainWindow
 from Code.configurate import Configurate
@@ -14,11 +17,14 @@ class MainUI(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
 
+        self.__setUIStyle()
+
     # 打开配置界面
     @pyqtSlot()
     def on_actionCfg_triggered(self):
-        self.cfgUI = Configurate()
+        self.cfgUI = Configurate(self)
         self.cfgUI.show()
+
 
     # 打开标注界面
     @pyqtSlot()
@@ -40,3 +46,22 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.test = Test(self)
         self.test.show()
         self.hide()
+
+
+    def __setUIStyle(self):
+
+
+        self.setWindowIcon(QIcon('ArtRes/main.png'))
+        self.setStyleSheet("QMainWindow{background-image:url(ArtRes/backgroud.jpg)}"
+                            "QDialog{background-image:url(ArtRes/backgroud.jpg)}"
+                            "QPushButton{background:#afb4db;border-radius:5px;}QPushButton:hover{background:#9AFF9A;}" 
+                            "QPushButton{font-size:35px;font-family:'楷体'}"
+                            "QTableWidget{background:#C4C4C4}"
+                           )
+
+        self.pushButtonMark.setIcon(QIcon("ArtRes/mark.png"))
+        self.pushButtonTrain.setIcon(QIcon("ArtRes/train.png"))
+        self.pushButtonTest.setIcon(QIcon("ArtRes/test.png"))
+        self.actionCfg.setIcon(QIcon("ArtRes/setting.png"))
+        self.actiongAbout.setIcon(QIcon("ArtRes/about.png"))
+        self.setWindowState(Qt.WindowMaximized)
