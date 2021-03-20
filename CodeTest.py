@@ -1,5 +1,8 @@
 import os
 import sys
+
+from Code.inforFile import InforFile
+
 sys.path.append('../../../../CV/darknet/build/darknet/x64/darknet.py')
 
 
@@ -42,25 +45,37 @@ def getBatch(path):
 
 if __name__ == '__main__':
     a = File()
-    # dic = a.cfgRead()
+    # a.getInfor("mark")
+    dic = a.cfgRead()
+    FileDir = dic['Yolo_mark'] + '/data/img/'
+    f=str(FileDir).replace("/",'\\')
+    print(f)
+    os.system("start explorer "+f)
 
     # a=getBatch(dic['cfg'])
     # print(a)
     # RunDarknet(dic,image)
 
-    # dirs=r"C:\Users\zxxw\Desktop\A\\"
+    # dirs=r"C:\Users\zxxw\Desktop\aa.txt"
     # if not os.path.exists(dirs):
     #     os.makedirs(dirs)
 
     # with open(filepath,'w') as file:
     #     file.write("sdagag")
 
-    # a=File.getMarkNames("")
-    # print(a)
-    a=['as']
+    # b=a.getMarkNames()
+
+    # print(b)
+    # q={'C','d','y'}
+    # a.setMarkNames(q)
+    # a=['as']
     # a[1]=234
     # print(a)
     # for i in range(10,0,1)
+    # with open(dirs,'+') as file:
+        # a=file.readlines()
+        # print(a)
+
 
 
     pass
