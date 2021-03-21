@@ -3,7 +3,7 @@ import os
 import xml.etree.ElementTree as et
 
 
-class File():
+class CfgFile():
 
     def __init__(self):
         self.__xml = {}  # 获取到的xml数据

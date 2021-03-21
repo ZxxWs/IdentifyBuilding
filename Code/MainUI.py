@@ -13,10 +13,10 @@ from Code.test import Test
 
 class MainUI(QMainWindow, Ui_MainWindow):
 
-    def __init__(self, parent=None):
+    def __init__(self,projectName,parent=None):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
-
+        self.projectName=projectName
         self.__setUIStyle()
 
     # 打开配置界面
@@ -52,6 +52,7 @@ class MainUI(QMainWindow, Ui_MainWindow):
 
 
         self.setWindowIcon(QIcon('ArtRes/main.png'))
+        self.setWindowTitle("图像识别系统——"+self.projectName)
         self.setStyleSheet("QMainWindow{background-image:url(ArtRes/backgroud.jpg)}"
                             "QDialog{background-image:url(ArtRes/backgroud.jpg)}"
                             "QPushButton{background:#afb4db;border-radius:5px;}QPushButton:hover{background:#9AFF9A;}" 

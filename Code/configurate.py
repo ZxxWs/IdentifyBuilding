@@ -2,7 +2,7 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QHeaderView, QTableWidgetItem, QPushButton, QFileDialog
-from Code.File import File
+from Code.File.cfgFile import CfgFile
 from GUI.Ui_configurate import Ui_Configurate
 
 '''
@@ -19,9 +19,10 @@ class Configurate(QDialog, Ui_Configurate):
 
 
         # 读取文件配置信息
-        self.__cfgfile = File()
+        self.__cfgfile = CfgFile()
         self.__dic = self.__cfgfile.cfgRead()
-        self.__RowList = ['Yolo_mark', 'conv','darknet', 'data', 'cfg', 'weights']  # 此行代码异常重要,保存的是data\cfg.xml中的键
+        # self.__RowList = ['Yolo_mark', 'conv','darknet', 'data', 'cfg', 'weights']  # 此行代码异常重要,保存的是data\cfg.xml中的键
+        self.__RowList = ['Yolo_mark', 'darknet']  # 此行代码异常重要,保存的是data\cfg.xml中的键
 
         self.__fillTable()  # 填充表格内容
 
@@ -66,7 +67,7 @@ class Configurate(QDialog, Ui_Configurate):
     def button_clicked(self):
 
 
-        fileDir={0}#有的路径是文件、有的路径是文件夹，其中这个集合中的是文件夹
+        fileDir={0,1}#有的路径是文件、有的路径是文件夹，其中这个集合中的是文件夹
         button = self.sender()
         row = -1  # 初始化行数
         if button:
@@ -94,5 +95,6 @@ class Configurate(QDialog, Ui_Configurate):
 
         self.setWindowIcon(QIcon('ArtRes/setting.png'))
         self.setStyleSheet(
-                           "QDialog{background-image:url(ArtRes/backgroudCfg.jpg)}"
+                           "QDialog{background-image:url(ArtRes/backgroudBlack.png)}"
+                           "QPushButton{background:#afb4db;border-radius:5px;}QPushButton:hover{background:#9AFF9A;}"
                            )

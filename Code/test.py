@@ -4,7 +4,6 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog
-from Code.File import File
 from GUI.Ui_test import Ui_Test
 
 
@@ -14,6 +13,7 @@ class Test(QDialog, Ui_Test):
         QDialog.__init__(self, parent)
         self.setupUi(self)
         self.progressBar.hide()
+
 
     def __RunTest(self, dic, image):
 
@@ -48,8 +48,8 @@ class Test(QDialog, Ui_Test):
             image = str(self.lineEdit.text())
             print(image)
 
-            cfgFile = File()
-            dic = cfgFile.cfgRead()
+            CfgFile = CfgFile()
+            dic = CfgFile.cfgRead()
             self.__RunTest(dic, image)
         except:
             print("测试错误")

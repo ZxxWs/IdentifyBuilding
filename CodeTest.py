@@ -1,20 +1,16 @@
 import os
 import sys
 
-from Code.inforFile import InforFile
+from Code.File.projectsManage import ProjectsManage
 
 sys.path.append('../../../../CV/darknet/build/darknet/x64/darknet.py')
 
-
-
-from time import sleep
-
-from Code.File import File
+from Code.File.cfgFile import CfgFile
 
 
 def RunDarknet(dic,image):
 
-    a = File()
+    a = CfgFile()
     dic = a.cfgRead()
     image = r'D:\CV\darknet\build\darknet\x64\Zxx\test\000751.jpg'
 
@@ -44,13 +40,13 @@ def getBatch(path):
 
 
 if __name__ == '__main__':
-    a = File()
-    # a.getInfor("mark")
-    dic = a.cfgRead()
-    FileDir = dic['Yolo_mark'] + '/data/img/'
-    f=str(FileDir).replace("/",'\\')
-    print(f)
-    os.system("start explorer "+f)
+    # a = CfgFile()
+    # # a.getInfor("mark")
+    # dic = a.cfgRead()
+    # FileDir = dic['Yolo_mark'] + '/data/img/'
+    # f=str(FileDir).replace("/",'\\')
+    # print(f)
+    # os.system("start explorer "+f)
 
     # a=getBatch(dic['cfg'])
     # print(a)
@@ -66,7 +62,9 @@ if __name__ == '__main__':
     # b=a.getMarkNames()
 
     # print(b)
-    # q={'C','d','y'}
+    # q={'C','d','y','y'}
+
+    # print(q[0])
     # a.setMarkNames(q)
     # a=['as']
     # a[1]=234
@@ -76,7 +74,9 @@ if __name__ == '__main__':
         # a=file.readlines()
         # print(a)
 
-
+    a=ProjectsManage()
+    a.delProject("aaa")
+    # a.newProject("aaa")
 
     pass
 

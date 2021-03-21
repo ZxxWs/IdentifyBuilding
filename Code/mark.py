@@ -5,8 +5,8 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QHeaderView, QTableWidgetItem, QPushButton, QTableWidget
 
-from Code.File import File
-from Code.inforFile import InforFile
+from Code.File.cfgFile import CfgFile
+from Code.File.inforFile import InforFile
 from GUI.Ui_mark import Ui_Mark
 
 
@@ -17,7 +17,7 @@ class Mark(QDialog, Ui_Mark):
         self.setupUi(self)
 
         # 获取项目配置信息
-        self.__cfgFile = File()
+        self.__cfgFile = CfgFile()
         self.__cfgDic = self.__cfgFile.cfgRead()
         self.nameSet = self.__cfgFile.getMarkNames()
 
@@ -122,6 +122,7 @@ class Mark(QDialog, Ui_Mark):
         self.tableWidget.setRowCount(len(self.nameSet) + 1)
         i = 0
         for name in self.nameSet:
+
             item = QTableWidgetItem(name)
             self.tableWidget.setItem(i, 0, item)
 
