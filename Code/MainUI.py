@@ -3,7 +3,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QMainWindow
 
-
+# from Code.newProject import NewProject
 from GUI.Ui_Main import Ui_MainWindow
 from Code.configurate import Configurate
 from Code.mark import Mark
@@ -22,9 +22,25 @@ class MainUI(QMainWindow, Ui_MainWindow):
     # 打开配置界面
     @pyqtSlot()
     def on_actionCfg_triggered(self):
-        self.cfgUI = Configurate(self)
-        self.cfgUI.show()
+        # self.cfgUI = Configurate(self)
+        # self.cfgUI.show()
+        pass
 
+    # 打开新建项目界面
+    @pyqtSlot()
+    def on_actionNewProject_triggered(self):
+        # self.newProject=NewProject()
+        # self.newProject.show()
+        # self.cfgUI = Configurate(self)
+        # self.cfgUI.show()
+        pass
+
+    # 打开打开项目界面
+    @pyqtSlot()
+    def on_actionOpenProject_triggered(self):
+        # self.cfgUI = Configurate(self)
+        # self.cfgUI.show()
+        pass
 
     # 打开标注界面
     @pyqtSlot()
@@ -48,6 +64,7 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.hide()
 
 
+
     def __setUIStyle(self):
 
 
@@ -65,4 +82,7 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.pushButtonTest.setIcon(QIcon("ArtRes/test.png"))
         self.actionCfg.setIcon(QIcon("ArtRes/setting.png"))
         self.actiongAbout.setIcon(QIcon("ArtRes/about.png"))
+        self.actionNewProject.setIcon(QIcon("ArtRes/newProject.png"))
+        self.actionOpenProject.setIcon(QIcon("ArtRes/openProject.png"))
         self.setWindowState(Qt.WindowMaximized)
+

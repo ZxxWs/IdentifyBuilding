@@ -203,6 +203,8 @@
     <property name="title">
      <string>菜单</string>
     </property>
+    <addaction name="actionNewProject"/>
+    <addaction name="actionOpenProject"/>
     <addaction name="actionCfg"/>
     <addaction name="actiongAbout"/>
    </widget>
@@ -216,6 +218,19 @@
   <action name="actiongAbout">
    <property name="text">
     <string>关于</string>
+   </property>
+  </action>
+  <action name="actionNewProject">
+   <property name="text">
+    <string>新建项目</string>
+   </property>
+  </action>
+  <action name="actionOpenProject">
+   <property name="text">
+    <string>打开项目</string>
+   </property>
+   <property name="toolTip">
+    <string>打开项目</string>
    </property>
   </action>
  </widget>

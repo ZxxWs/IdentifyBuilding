@@ -8,6 +8,7 @@ from Code.File.projectsManage import ProjectsManage
 # from Code.MainUI import MainUI
 from Code.MainUI import MainUI
 from Code.configurate import Configurate
+from Code.confirmAlert import ConfirmAlert
 from Code.newProject import NewProject
 from GUI.Ui_navigate import Ui_Navigate
 
@@ -31,8 +32,9 @@ class Navigate(QDialog, Ui_Navigate):
     @pyqtSlot()
     def on_pushButtonNew_clicked(self):
 
-        newProject = NewProject(self)
-        newProject.show()
+        self.newProject = NewProject(1, self)  # 此处传入的参数1，用于接收返回值
+        self.newProject.NewProjectSignal.connect(self.getNewProjectSignal)  # 将子界面的信号量和本类中的方法绑定
+        self.newProject.show()
 
     @pyqtSlot()
     def on_pushButtonSetting_clicked(self):
@@ -52,6 +54,7 @@ class Navigate(QDialog, Ui_Navigate):
 
         i = 0
         for pro in self.projectList:
+            # 向表格中填充按钮
             buttonOpen = QPushButton(pro)
             buttonDel = QPushButton()
 
@@ -59,7 +62,6 @@ class Navigate(QDialog, Ui_Navigate):
             buttonOpen.clicked.connect(self.buttonOpen_clicked)
             buttonDel.clicked.connect(self.buttonDel_clicked)
             self.tableWidget.setCellWidget(i, 0, buttonOpen)
-
             self.tableWidget.setCellWidget(i, 1, buttonDel)
             i += 1
 
@@ -77,12 +79,36 @@ class Navigate(QDialog, Ui_Navigate):
 
     def buttonDel_clicked(self):
 
+        global row
         button = self.sender()
-
         if button:
             row = self.tableWidget.indexAt(button.pos()).row()
-        self.tableWidget.removeRow(row)
-        self.projectsManage.delProject(self.projectList[row])
+
+        self.__delRow = row
+
+        # 删除弹框--------------------------------------
+        tag = "确认删除" + self.projectList[row] + "项目？"
+        self.confirmAlert = ConfirmAlert(tag)  # 此处传入的参数1，用于接收返回值
+        self.confirmAlert.ConfirmAlertSignal.connect(self.getConfirmAlertSignal)
+        self.confirmAlert.show()
+
+    def getNewProjectSignal(self, tag, name):
+
+        if tag == 1:
+            print(name)
+
+            # print(self.newProject.NewProjectSignal.__repr__())
+            print("子界面被关闭")
+
+    def getConfirmAlertSignal(self, tag):  # 返回0，表示取消
+
+        if tag == 1:
+            self.tableWidget.removeRow(self.__delRow)
+            self.projectsManage.delProject(self.projectList[self.__delRow])
+
+            # 删除项目文件后，需要修改项目列表
+            del self.projectList[self.__delRow]
+        pass
 
     # 本页面的UI设置
     def __setUIStyle(self):
@@ -108,21 +134,16 @@ class Navigate(QDialog, Ui_Navigate):
         self.tableWidget.setStyleSheet("QTableWidget{background:rgb(100,100,100,0)}"
                                        "QTableWidget{border-style:none}:"
                                        )
-        self.pushButtonNew.setStyleSheet("QPushButton{background:rgb(255,255,255,0);border-radius:5px;}"
-                                         "QPushButton:hover{background:#afb4db;}"
+        self.pushButtonNew.setStyleSheet("QPushButton{background:rgb(255,255,255,17);border-radius:5px;}"
+                                         "QPushButton:hover{background:#9AFF9A;color:black}"
+                                         "QPushButton{font-size:35px;font-family:'楷体'}"
                                          "QPushButton{color:#F5FFFA}"
                                          )
-        self.pushButtonSetting.setStyleSheet("QPushButton{background:rgb(255,255,255,0);border-radius:5px;}"
-                                             "QPushButton:hover{background:#afb4db;}"
-                                             "QPushButton{color:#F5FFFA}"
+        self.pushButtonSetting.setStyleSheet("QPushButton{background:rgb(255,255,255,17);border-radius:5px;}"
+                                             "QPushButton:hover{background:#9AFF9A;color:black}"
                                              "QPushButton{font-size:15px;font-family:'楷体'}"
+                                             "QPushButton{color:#F5FFFA}"
                                              )
 
         self.pushButtonNew.setIcon(QIcon('ArtRes/add.png'))
         self.pushButtonSetting.setIcon(QIcon('ArtRes/cfg.png'))
-        # self.pushButtonOpenImgDir.setIcon(QIcon("ArtRes/file.png"))
-
-    def closeSelf(self):
-        self.close()
-
-
