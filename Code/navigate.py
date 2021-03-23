@@ -32,7 +32,7 @@ class Navigate(QDialog, Ui_Navigate):
     @pyqtSlot()
     def on_pushButtonNew_clicked(self):
 
-        self.newProject = NewProject(1, self)  # 此处传入的参数1，用于接收返回值
+        self.newProject = NewProject(1)  # 此处传入的参数1，用于接收返回值
         self.newProject.NewProjectSignal.connect(self.getNewProjectSignal)  # 将子界面的信号量和本类中的方法绑定
         self.newProject.show()
 
@@ -105,7 +105,6 @@ class Navigate(QDialog, Ui_Navigate):
         if tag == 1:
             self.tableWidget.removeRow(self.__delRow)
             self.projectsManage.delProject(self.projectList[self.__delRow])
-
             # 删除项目文件后，需要修改项目列表
             del self.projectList[self.__delRow]
         pass

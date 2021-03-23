@@ -1,6 +1,7 @@
 import os
 import sys
 
+from Code.File.projectSetting import ProjectSetting
 from Code.File.projectsManage import ProjectsManage
 
 sys.path.append('../../../../CV/darknet/build/darknet/x64/darknet.py')
@@ -74,9 +75,10 @@ if __name__ == '__main__':
         # a=file.readlines()
         # print(a)
 
-    a=ProjectsManage()
-    a.delProject("aaa")
+    # a=ProjectsManage()
+    # a.delProject("aaa")
     # a.newProject("aaa")
+    a=ProjectSetting("A")
 
     pass
 

@@ -37,13 +37,15 @@ class ProjectsManage():
         if not os.path.exists(self.__markDirs):
             os.makedirs(self.__markDirs)
 
-    def newProject(self, projectName):
+    def newProject(self, projectName, tagNames):
 
         try:
             darknet = self.__darknetDirs + projectName
             mark = self.__markDirs + projectName
 
-            if self.__createFileAndDirs(darknet, mark, projectName):
+            # 建立各种文件及文件夹
+            if self.__createFileAndDirs(darknet, mark, projectName, tagNames):
+                # 向项目名称列表中添加项目名
                 with open(self.__filePath, mode="a", newline="") as file:
                     row = [projectName]
                     write = csv.writer(file)
@@ -65,12 +67,12 @@ class ProjectsManage():
             darknet = self.__darknetDirs + projectName
             mark = self.__markDirs + projectName
 
-            shutil.rmtree(darknet)# darknet项目
-            shutil.rmtree(mark) # mark项目
+            shutil.rmtree(darknet)  # darknet项目
+            shutil.rmtree(mark)  # mark项目
 
             print("删除项目文件完毕")
 
-            #下面的命令只能删除空文件夹
+            # 下面的命令只能删除空文件夹
             # os.rmdir(darknete)  # darknet项目
             # os.rmdir(mark)  # mark项目
 
@@ -82,8 +84,6 @@ class ProjectsManage():
 
         except:
             print("删除项目出错")
-
-
 
     def getProjectsList(self):
 
@@ -99,40 +99,75 @@ class ProjectsManage():
 
         return projectsList[1:]  # 返回表头
 
-    def __createFileAndDirs(self, darknet, mark, projectName):
+    # 建立项目需要的文件和文件夹
+    def __createFileAndDirs(self, darknet, mark, projectName, tagNames):
 
         try:
             # 新建两个主文件夹
             os.makedirs(darknet)  # darknet项目
             os.makedirs(mark)  # mark项目
 
-            # 新建各个文件和文件夹
-            # Darknet-----------------------------------------
+            # 新建各个文件夹-----------------------------------------
+            # Darknet
             os.makedirs(darknet + '\\test')
             os.makedirs(darknet + '\\backup')
             os.makedirs(darknet + '\\train')
+            # Mark
+            os.makedirs(mark + '\\img')
 
+            # 建立项目文件
             cfg = os.getcwd() + "/Data/yolo-obj.cfg"  # 整个软件的配置
             shutil.copy(cfg, darknet)  # 添加yolo-obj.cfg文件
 
-            self.__createObjData(darknet, projectName)
+            self.__createObjData(mark, darknet, projectName, tagNames)
+            self.__createObjNames(mark, darknet, tagNames)
 
-            # Mark-----------------------------------------
-            os.makedirs(mark + '\\img')
-
+            self.__settingCfg(darknet, projectName, tagNames)
             return True
         except:
             return False
 
-    def __createObjData(self, darknet, projectName):
+    def __createObjData(self, mark, darknet, projectName, tagNames):
 
-        txt = ""
+        with open(darknet + '/obj.data', 'w') as fileDarknet:
+            fileDarknet.write("classes= " + str(len(tagNames)) + "\n")
+            fileDarknet.write("train=projects/" + projectName + "/train.txt\n")
+            fileDarknet.write("valid=projects/" + projectName + "/test.txt\n")
+            fileDarknet.write("names= " + darknet + "/obj.names\n")
+            fileDarknet.write("backup=" + darknet + "/backup/")
+            fileDarknet.close()
 
-        with open(darknet + '/obj.data', 'w') as file:
-            file.write("classes=0\n")
-            file.write("train=project/" + projectName + "/train.txt\n")
-            file.write("valid=project/" + projectName + "/test.txt\n")
-            file.write("names= " + darknet + "/obj.names\n")
-            file.write("backup=" + darknet + "/backup/")
+        with open(mark + '/obj.data', 'w') as fileMark:
+            fileMark.write("classes=" + str(len(tagNames)) + "\n")
+            fileMark.write("train=projects/" + projectName + "/train.txt\n")
+            fileMark.write("valid=projects/" + projectName + "/test.txt\n")
+            fileMark.write("names=projects/" + projectName + "/obj.names\n")
+            fileMark.write("backup=backup/")
+            fileMark.close()
 
-            pass
+    def __createObjNames(self, mark, darknet, tagNames):
+        with open(darknet + "/obj.names", 'w') as fileDarknet:
+            for i in tagNames:
+                if i == tagNames[-1]:
+                    fileDarknet.write(i)
+                    break
+                fileDarknet.write(i + "\n")
+            fileDarknet.close()
+        # 直接将文件复制一份
+        shutil.copy(darknet + "/obj.names", mark)  # 复制文件
+
+    def __settingCfg(self, darknet, projectName, tagNames):
+
+        #这个文件需要配置：
+        '''
+        batch=x2
+        subdivisions=16
+        max_batches=
+        '''
+
+
+
+
+
+
+        pass
