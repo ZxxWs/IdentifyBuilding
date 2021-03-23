@@ -3,9 +3,9 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QMainWindow
 
-# from Code.newProject import NewProject
+from Code.newProject import NewProject
+from Code.openProject import OpenProject
 from GUI.Ui_Main import Ui_MainWindow
-from Code.configurate import Configurate
 from Code.mark import Mark
 from Code.train import Train
 from Code.test import Test
@@ -13,10 +13,10 @@ from Code.test import Test
 
 class MainUI(QMainWindow, Ui_MainWindow):
 
-    def __init__(self,projectName,parent=None):
+    def __init__(self, projectName, parent=None):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
-        self.projectName=projectName
+        self.projectName = projectName
         self.__setUIStyle()
 
     # 打开配置界面
@@ -29,18 +29,19 @@ class MainUI(QMainWindow, Ui_MainWindow):
     # 打开新建项目界面
     @pyqtSlot()
     def on_actionNewProject_triggered(self):
-        # self.newProject=NewProject()
-        # self.newProject.show()
-        # self.cfgUI = Configurate(self)
-        # self.cfgUI.show()
+        self.newProject = NewProject(2)
+        self.newProject.NewProjectSignal.connect(self.getNewProjectSignal)  # 将子界面的信号量和本类中的方法绑定
+        self.newProject.show()
         pass
 
     # 打开打开项目界面
     @pyqtSlot()
     def on_actionOpenProject_triggered(self):
-        # self.cfgUI = Configurate(self)
-        # self.cfgUI.show()
-        pass
+        print("打开项目")
+        self.openProject = OpenProject()
+        self.openProject.OpenProjectSignal.connect(self.getOpenProjectSignal)  # 将子界面的信号量和本类中的方法绑定
+        self.openProject.show()
+
 
     # 打开标注界面
     @pyqtSlot()
@@ -63,18 +64,25 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.test.show()
         self.hide()
 
+    def getNewProjectSignal(self, tag, name):
+        if tag == 2:
+            self.MainUi = MainUI(name)
+            self.MainUi.show()
+            self.close()
 
+    def getOpenProjectSignal(self, name):
+
+        self.projectName=name
+        self.setWindowTitle("图像识别系统——" + self.projectName)
 
     def __setUIStyle(self):
-
-
         self.setWindowIcon(QIcon('ArtRes/main.png'))
-        self.setWindowTitle("图像识别系统——"+self.projectName)
+        self.setWindowTitle("图像识别系统——" + self.projectName)
         self.setStyleSheet("QMainWindow{background-image:url(ArtRes/backgroud.jpg)}"
-                            "QDialog{background-image:url(ArtRes/backgroud.jpg)}"
-                            "QPushButton{background:#afb4db;border-radius:5px;}QPushButton:hover{background:#9AFF9A;}" 
-                            "QPushButton{font-size:35px;font-family:'楷体'}"
-                            "QTableWidget{background:#C4C4C4}"
+                           "QDialog{background-image:url(ArtRes/backgroud.jpg)}"
+                           "QPushButton{background:#afb4db;border-radius:5px;}QPushButton:hover{background:#9AFF9A;}"
+                           "QPushButton{font-size:35px;font-family:'楷体'}"
+                           "QTableWidget{background:#C4C4C4}"
                            )
 
         self.pushButtonMark.setIcon(QIcon("ArtRes/mark.png"))
@@ -85,4 +93,3 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.actionNewProject.setIcon(QIcon("ArtRes/newProject.png"))
         self.actionOpenProject.setIcon(QIcon("ArtRes/openProject.png"))
         self.setWindowState(Qt.WindowMaximized)
-

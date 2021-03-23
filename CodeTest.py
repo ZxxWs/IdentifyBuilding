@@ -1,8 +1,8 @@
 import os
 import sys
 
-from Code.File.projectSetting import ProjectSetting
 from Code.File.projectsManage import ProjectsManage
+from Code.File.settingYoloObjCfg import SettingYoloObjCfg
 
 sys.path.append('../../../../CV/darknet/build/darknet/x64/darknet.py')
 
@@ -78,8 +78,16 @@ if __name__ == '__main__':
     # a=ProjectsManage()
     # a.delProject("aaa")
     # a.newProject("aaa")
-    a=ProjectSetting("A")
+    # a=ProjectSetting("A")
+    a=SettingYoloObjCfg("Test")
+    b=a.getSubdivisions()
 
+    print(b)
+    # a.setBatch(64)
+    a.setSubdivisions(8)
+
+    b = a.getSubdivisions()
+    print(b)
     pass
 
 

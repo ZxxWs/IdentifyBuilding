@@ -6,6 +6,7 @@ import shutil
 import pandas as pd
 
 from Code.File.cfgFile import CfgFile
+from Code.File.settingYoloObjCfg import SettingYoloObjCfg
 
 
 class ProjectsManage():
@@ -118,11 +119,12 @@ class ProjectsManage():
             # 建立项目文件
             cfg = os.getcwd() + "/Data/yolo-obj.cfg"  # 整个软件的配置
             shutil.copy(cfg, darknet)  # 添加yolo-obj.cfg文件
+            settingYoloObjCfg = SettingYoloObjCfg(projectName)
+            settingYoloObjCfg.setAboutClasses(len(tagNames))
 
             self.__createObjData(mark, darknet, projectName, tagNames)
             self.__createObjNames(mark, darknet, tagNames)
 
-            self.__settingCfg(darknet, projectName, tagNames)
             return True
         except:
             return False
@@ -158,16 +160,11 @@ class ProjectsManage():
 
     def __settingCfg(self, darknet, projectName, tagNames):
 
-        #这个文件需要配置：
+        # 这个文件需要配置：
         '''
         batch=x2
         subdivisions=16
         max_batches=
         '''
-
-
-
-
-
 
         pass

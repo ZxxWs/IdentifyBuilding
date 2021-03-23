@@ -1,13 +1,11 @@
 # from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QColor, QBrush
 from PyQt5.QtWidgets import QDialog, QHeaderView, QPushButton, QTableWidgetItem
 
 from PyQt5.QtCore import pyqtSlot, Qt
 
 from Code.File.projectsManage import ProjectsManage
-# from Code.MainUI import MainUI
-from Code.MainUI import MainUI
 from GUI.Ui_newProject import Ui_NewProject
 
 
@@ -51,12 +49,6 @@ class NewProject(QDialog, Ui_NewProject):
             projectsManage.newProject(name, self.__NameList)
             # 向父界面传递信号
             self.NewProjectSignal.emit(self.father, name)
-
-            # self.project=MainUI(name)
-            # self.project.show()
-
-            # self.parent().close()
-
             # -----------此处可以设置为打开新的项目
 
         # --------------------------------------------此处未做输入验证——————————————————————————
@@ -97,6 +89,8 @@ class NewProject(QDialog, Ui_NewProject):
         if listLen + 1 < self.tableWidget.rowCount():
             return
         self.tableWidget.insertRow(listLen)
+
+        # self.tableWidget.item(listLen, 0).setBackground(QBrush(QColor(255, 255, 255, 199)))#不能用
         button = QPushButton()
         button.clicked.connect(self.Delbutton_clicked)
         button.setIcon(QIcon("ArtRes/del.png"))
@@ -146,6 +140,8 @@ class NewProject(QDialog, Ui_NewProject):
         for i in range(len(self.__NameList)):
             item = QTableWidgetItem(self.__NameList[i])
             self.tableWidget.setItem(i, 0, item)
+
+            self.tableWidget.item(i, 0).setBackground(QBrush(QColor(255, 255, 255, 199)))
             button = QPushButton()
             button.clicked.connect(self.Delbutton_clicked)
             button.setIcon(QIcon("ArtRes/del.png"))
