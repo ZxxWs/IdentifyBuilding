@@ -42,18 +42,17 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.openProject.OpenProjectSignal.connect(self.getOpenProjectSignal)  # 将子界面的信号量和本类中的方法绑定
         self.openProject.show()
 
-
     # 打开标注界面
     @pyqtSlot()
     def on_pushButtonMark_clicked(self):
-        self.mark = Mark(self.projectName,self)
+        self.mark = Mark(self.projectName, self)
         self.mark.show()
         self.hide()
 
     # 打开训练界面
     @pyqtSlot()
     def on_pushButtonTrain_clicked(self):
-        self.train = Train(self)
+        self.train = Train(self.projectName, self)
         self.train.show()
         self.hide()
 
@@ -71,8 +70,7 @@ class MainUI(QMainWindow, Ui_MainWindow):
             self.close()
 
     def getOpenProjectSignal(self, name):
-
-        self.projectName=name
+        self.projectName = name
         self.setWindowTitle("图像识别系统——" + self.projectName)
 
     def __setUIStyle(self):

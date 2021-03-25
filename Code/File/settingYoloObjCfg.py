@@ -10,7 +10,7 @@ class SettingYoloObjCfg():
         dic = cfgFile.cfgRead()
         self.filePath = dic["darknet"] + "/projects/" + projectName + "/yolo-obj.cfg"  # 此路径存放的是自己项目的yolo-obj.cfg
 
-    # 获取.cfg中的batch值
+    # 获取.cfg中的batch值，返回的是int值
     def getBatch(self):
         batch = -1
         with open(self.filePath, 'r') as file:
@@ -45,6 +45,7 @@ class SettingYoloObjCfg():
                 newFile.write(line)
             newFile.close()
 
+    #返回的是int值
     def getSubdivisions(self):
         subdivisions = -1
         with open(self.filePath, 'r') as file:

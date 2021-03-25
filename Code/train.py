@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot, Qt
@@ -6,87 +7,133 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog
 
 from Code.File.cfgFile import CfgFile
+from Code.File.settingYoloObjCfg import SettingYoloObjCfg
 from GUI.Ui_train import Ui_Train
 
 
-# from warning import Warning
-
 class Train(QDialog, Ui_Train):
 
-    def __init__(self, parent=None):
+    def __init__(self, projectName, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
         # 获取项目配置信息
-        self.__cfgFile = CfgFile()
-        self.__dic = self.__cfgFile.cfgRead()
+        cfgFile = CfgFile()
+        self.cfgDic = cfgFile.cfgRead()
+        self.projectPath = self.cfgDic['darknet'] + '/projects/' + projectName + '/'  # 项目路径链接
+        self.markPath = self.cfgDic['Yolo_mark'] + '/projects/' + projectName + '/img/'  # 用于转存文件的mark项目路径
+        self.settingYoloObjCfg = SettingYoloObjCfg(projectName)
+        self.projectName = projectName
+        self.__isTrainTag = False  # 0表示未训练
+        self.__initTag = True  # 此tag为真时表示界面是初始化，comboBox不调用
 
-        self.__trainTag = 0  # 0表示未训练
-
-        self.__initUI()
+        self.__initUIData()
         self.__setUIStyle()
 
     @pyqtSlot()
-    def on_pushButton_clicked(self):
-        if self.__trainTag == 0:
-            self.pushButton.setText("停止训练")
-            self.__runTrain()
-            self.__trainTag = 1
-        else:
-            self.pushButton.setText("开始训练")
-            os.system("taskkill /f /im darknet.exe")
-            self.__trainTag = 0
+    def on_pushButtonTrain_clicked(self):
 
+        if self.__isTrainTag:
+            self.pushButtonTrain.setText("开始训练")
+            os.system("taskkill /f /im darknet.exe")
+            self.__lockUI(False)
+            self.__isTrainTag = False
+        else:
+            self.pushButtonTrain.setText("停止训练")
+            self.__lockUI(True)
+            self.__loadingJPG()
+            self.__runTrain()
+            self.__isTrainTag = True
 
     @pyqtSlot()
     def on_pushButtonBack_clicked(self):
-
+        os.system("taskkill /f /im darknet.exe")
         self.close()
 
     @pyqtSlot()
     def on_pushButtonOpenDir_clicked(self):
-        self.close()
+
+        fileDir = self.projectPath + 'train/'
+        f = str(fileDir).replace("/", '\\')
+        if not os.path.exists(f):
+            os.makedirs(f)
+        os.system("start explorer " + f)
 
     @pyqtSlot()
+    # 此处文件转存方式太低级
     def on_pushButtonMove_clicked(self):
-        self.close()
 
+        fileList = os.listdir(self.markPath)
+        for file in fileList:
+            shutil.copy(self.markPath + file, self.projectPath + "train")
+        print("转存完成")
+        self.loadingJPG()
 
     def __runTrain(self):
-        # darknet.exe  detector  train  data / obj.data  yolo - obj.cfg  yolov4.conv .137
-        CMD = self.__dic['darknet'] + " detector train " + self.__dic['data'] + " " + self.__dic['cfg'] + " " + \
-              self.__dic['conv']
-        print(CMD)
+        CMD = self.cfgDic[
+                  "darknet"] + "/darknet.exe detector train " + self.projectPath + "obj.data " + self.projectPath + "yolo-obj.cfg " + \
+              self.cfgDic["conv"]
 
         os.popen(CMD)
 
+    @pyqtSlot(str)
+    def on_comboBoxBatch_currentIndexChanged(self,batch):
+        if self.__initTag:
+            return
+        self.settingYoloObjCfg.setBatch(batch)
+
+    @pyqtSlot(str)
+    def on_comboBoxSubdivision_currentIndexChanged(self,subdivision):
+        if self.__initTag:
+            return
+
+        self.settingYoloObjCfg.setSubdivisions(int(subdivision))
+
     # 退出界面触发的事件
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-
         os.system("taskkill /f /im darknet.exe")
         self.parent().show()
 
-    def __initUI(self):
-        batch = self.__cfgFile.getBatch()
-        if batch != -1:
-            self.comboBox.setCurrentText(str(batch))
-        else:
-            self.__warning = Warning("batch错误", self)
-            self.__warning.show()
-            return
+    def __loadingJPG(self):
+        prefix = "projects/" + self.projectName + "/train/"  # 填写的前缀
+        with open(self.projectPath + 'train.txt', 'w') as trainTXT:
+            fileNames = os.listdir(self.projectPath + "train/")
 
-    @pyqtSlot(str)
-    def on_comboBox_currentIndexChanged(self):
-        batch = self.comboBox.currentText()
-        self.__cfgFile.setBatch(batch)
+            for fileName in fileNames:
+                if fileName[-4:] == ".jpg":
+                    trainTXT.write(prefix + fileName + "\n")
+            trainTXT.close()
 
+    def __initUIData(self):
 
+        txt = "请在" + self.projectPath + "train/文件夹下放置训练集"
+        self.labelOpen.setText(txt)
+        self.labelOpen.setWordWrap(True)
+
+        batch = self.settingYoloObjCfg.getBatch()
+        subdivisions = self.settingYoloObjCfg.getSubdivisions()
+
+        self.comboBoxBatch.setCurrentText(str(batch))
+        self.comboBoxSubdivision.setCurrentText(str(subdivisions))
+
+        self.__initTag = False
+
+    # 在执行训练函数后锁定一些UI，禁止点击或改动。如果介绍训练，则可以改动、点击.tag为bool
+    def __lockUI(self, tag=True):
+
+        self.pushButtonOpenDir.setDisabled(tag)
+        self.pushButtonMove.setDisabled(tag)
+        self.comboBoxBatch.setDisabled(tag)
+        self.comboBoxSubdivision.setDisabled(tag)
 
     def __setUIStyle(self):
 
         self.setWindowIcon(QIcon('ArtRes/mark.png'))
 
         self.setWindowState(Qt.WindowMaximized)
-        self.setStyleSheet("QLabel{background-color:rgb(199,199,199,255);border-radius: 17px;font-size:24px}"
-
+        self.setStyleSheet("QLabel{background-color:rgb(0,0,0,155)}"
+                           "QLabel{color:#F5FFFA}"
+                           "QLabel{border-radius: 17px}"
+                           "QLabel{font-size:35px;font-family:'楷体'}"
+                           "QComboBox{border-radius:17px}"
                            )

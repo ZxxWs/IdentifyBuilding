@@ -16,6 +16,7 @@
 > 2. NewProject类的表格改变槽函数可以优化。But懒得弄了
 > 3. SettingYoloObjCfg类中的set方法有待优化(文件改写方法)
 > 4. mark界面的list文字不能居中，listview长度不能动态控制
+> 5. train界面on_pushButtonMove_clicked方法中文件的转存方式有待优化（个人觉得遍历的效率太低
 
 
 

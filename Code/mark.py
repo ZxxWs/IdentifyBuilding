@@ -17,13 +17,11 @@ class Mark(QDialog, Ui_Mark):
         self.setupUi(self)
 
         # 获取项目配置信息
-        self.__cfgFile = CfgFile()
-        self.__cfgDic = self.__cfgFile.cfgRead()
-        self.nameSet = self.__cfgFile.getMarkNames()
+        cfgFile = CfgFile()
+        self.__cfgDic =  cfgFile.cfgRead()
+        self.projectPath = self.__cfgDic['Yolo_mark'] + '/projects/' + projectName + '/'  # 项目路径链接
         self.projectName = projectName
-        self.projectPath = self.__cfgDic['Yolo_mark'] + '/projects/' + self.projectName + '/'  # 项目路径链接
 
-        self.tableTag = len(self.nameSet)  # 用于表格初始化的tag，防止初始化时表格变动导致的触发表格变动函数
         self.runTag = 0  # tag=0时，表示未运行标注程序
 
         self.__setUIStyle()
@@ -76,14 +74,13 @@ class Mark(QDialog, Ui_Mark):
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.parent().show()
 
-    # ---------------------------------------------Label--------------------------------------------------
-
     def __initLabel(self):
         txt = "请在" + self.projectPath + "img/文件夹下放置需要标记的图片"
         self.labelOpen.setText(txt)
         self.labelOpen.setWordWrap(True)
 
     def __initListView(self):
+
         self.listView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 列表不可点击
 
         projectSetting = ProjectSetting(self.projectName)
@@ -115,9 +112,6 @@ class Mark(QDialog, Ui_Mark):
         self.setWindowIcon(QIcon('ArtRes/mark.png'))
 
         self.setWindowState(Qt.WindowMaximized)
-        # self.setStyleSheet("QLabel{background-color:rgb(199,199,199,255);border-radius: 17px;font-size:24px}"
-        #                    "QTableWidget{font-size:19px}"
-        #                    )
         self.labelOpen.setStyleSheet("QLabel{background-color:rgb(0,0,0,155)}"
                                      "QLabel{color:#F5FFFA}"
                                      "QLabel{border-radius: 17px}"
@@ -130,4 +124,6 @@ class Mark(QDialog, Ui_Mark):
                                     "QListView{font-size:35px}"
                                     "QListView{text-align:centre}"
                                     )
-        # self.pushButtonOpenImgDir.setIcon(QIcon("ArtRes/file.png"))
+        self.pushButtonOpenImgDirs.setIcon(QIcon("ArtRes/file.png"))
+        self.pushButton.setIcon(QIcon("ArtRes/start.png"))
+        self.pushButtonBack.setIcon(QIcon("ArtRes/Cancel.png"))
