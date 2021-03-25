@@ -157,14 +157,3 @@ class ProjectsManage():
             fileDarknet.close()
         # 直接将文件复制一份
         shutil.copy(darknet + "/obj.names", mark)  # 复制文件
-
-    def __settingCfg(self, darknet, projectName, tagNames):
-
-        # 这个文件需要配置：
-        '''
-        batch=x2
-        subdivisions=16
-        max_batches=
-        '''
-
-        pass

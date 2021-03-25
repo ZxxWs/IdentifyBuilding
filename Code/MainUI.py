@@ -46,7 +46,7 @@ class MainUI(QMainWindow, Ui_MainWindow):
     # 打开标注界面
     @pyqtSlot()
     def on_pushButtonMark_clicked(self):
-        self.mark = Mark(self)
+        self.mark = Mark(self.projectName,self)
         self.mark.show()
         self.hide()
 

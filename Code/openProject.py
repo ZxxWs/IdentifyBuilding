@@ -42,7 +42,8 @@ class OpenProject(QDialog, Ui_OpenProject):
             # 向表格中填充按钮
             buttonOpen = QPushButton(pro)
             buttonDel = QPushButton()
-        #
+
+            buttonOpen.setIcon(QIcon("ArtRes/openProject.png"))
             buttonDel.setIcon(QIcon("ArtRes/del.png"))
             buttonOpen.clicked.connect(self.buttonOpen_clicked)
             buttonDel.clicked.connect(self.buttonDel_clicked)

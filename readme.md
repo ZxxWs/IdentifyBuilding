@@ -14,7 +14,8 @@
 ### 问题
 > 1. 在导航界面启动主界面的时候，主界面显示一下就闪退。可以将主界面作为导航界面的一个变量。      
 > 2. NewProject类的表格改变槽函数可以优化。But懒得弄了
-> 3. SettingYoloObjCfg类中的set方法有待优化
+> 3. SettingYoloObjCfg类中的set方法有待优化(文件改写方法)
+> 4. mark界面的list文字不能居中，listview长度不能动态控制
 
 
 

@@ -1,6 +1,7 @@
 import os
 import sys
 
+from Code.File.projectSetting import ProjectSetting
 from Code.File.projectsManage import ProjectsManage
 from Code.File.settingYoloObjCfg import SettingYoloObjCfg
 
@@ -41,6 +42,7 @@ def getBatch(path):
 
 
 if __name__ == '__main__':
+
     # a = CfgFile()
     # # a.getInfor("mark")
     # dic = a.cfgRead()
@@ -79,14 +81,18 @@ if __name__ == '__main__':
     # a.delProject("aaa")
     # a.newProject("aaa")
     # a=ProjectSetting("A")
-    a=SettingYoloObjCfg("Test")
-    b=a.getSubdivisions()
+    # a=SettingYoloObjCfg("Test")
+    # b=a.getSubdivisions()
 
-    print(b)
+    # print(b)
     # a.setBatch(64)
-    a.setSubdivisions(8)
+    # a.setSubdivisions(8)
 
-    b = a.getSubdivisions()
+    # b = a.getSubdivisions()
+    # print(b)
+
+    a=ProjectSetting("A")
+    b=a.getObjNames()
     print(b)
     pass
 
