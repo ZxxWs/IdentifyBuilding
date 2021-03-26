@@ -89,6 +89,7 @@ class Ui_Mark(object):
         self.listView.setFont(font)
         self.listView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.listView.setFlow(QtWidgets.QListView.TopToBottom)
+        self.listView.setProperty("isWrapping", False)
         self.listView.setItemAlignment(QtCore.Qt.AlignCenter)
         self.listView.setObjectName("listView")
         self.verticalLayout_8.addWidget(self.listView, 0, QtCore.Qt.AlignVCenter)

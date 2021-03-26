@@ -89,8 +89,10 @@ class Mark(QDialog, Ui_Mark):
         slm.setStringList(objNames)  # 将数据设置到model
         self.listView.setModel(slm)  ##绑定 listView 和 model
 
-        # self.listView.setItemAlignment(Qt.TextAlignmentRole)
-        # self.listView.setItemAlignment(Qt.AlignCenter)  # 此行需要在PyQt5.12上运行
+
+        # self.listView.setItemAlignment(Qt.AlignRight)
+        self.listView.setItemAlignment(Qt.AlignCenter)  # 此行需要在PyQt5.12上运行
+        print(objNames)
 
     # 点击“标注”按钮后触发的，创建并写入train.txt文件
 
@@ -122,7 +124,8 @@ class Mark(QDialog, Ui_Mark):
         self.listView.setStyleSheet("QListView{background-color:rgb(200,200,200,155)}"
                                     "QListView{border-radius: 17px}"
                                     "QListView{font-size:35px}"
-                                    "QListView{text-align:centre}"
+                                    "QListView{text-align:right}" 
+                                    "QListView{border-style:none}:"
                                     )
         self.pushButtonOpenImgDirs.setIcon(QIcon("ArtRes/file.png"))
         self.pushButton.setIcon(QIcon("ArtRes/start.png"))

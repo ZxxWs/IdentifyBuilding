@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QMainWindow
 
+from Code.configurate import Configurate
 from Code.newProject import NewProject
 from Code.openProject import OpenProject
 from GUI.Ui_Main import Ui_MainWindow
@@ -22,9 +23,10 @@ class MainUI(QMainWindow, Ui_MainWindow):
     # 打开配置界面
     @pyqtSlot()
     def on_actionCfg_triggered(self):
-        # self.cfgUI = Configurate(self)
-        # self.cfgUI.show()
-        pass
+        self.cfgUI = Configurate(self)
+        self.cfgUI.show()
+
+
 
     # 打开新建项目界面
     @pyqtSlot()
@@ -59,7 +61,7 @@ class MainUI(QMainWindow, Ui_MainWindow):
     # 打开测试界面
     @pyqtSlot()
     def on_pushButtonTest_clicked(self):
-        self.test = Test(self)
+        self.test = Test(self.projectName, self)
         self.test.show()
         self.hide()
 

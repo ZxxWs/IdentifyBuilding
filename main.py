@@ -15,8 +15,8 @@ from Code.navigate import Navigate
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    myapp = MainUI("building")
-    # myapp = Navigate()
+    # myapp = MainUI("building")
+    myapp = Navigate()
     # myapp.show()
 
     # myapp=Mark("building")

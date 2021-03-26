@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>780</width>
-    <height>273</height>
+    <height>248</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -16,7 +16,7 @@
   <property name="windowTitle">
    <string>项目配置</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1">
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -82,7 +82,7 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,1,1">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -98,6 +98,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonCancel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>取消</string>
        </property>
@@ -105,6 +111,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonVerify">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>确认</string>
        </property>

@@ -133,8 +133,8 @@ class ProjectsManage():
 
         with open(darknet + '/obj.data', 'w') as fileDarknet:
             fileDarknet.write("classes= " + str(len(tagNames)) + "\n")
-            fileDarknet.write("train=projects/" + projectName + "/train.txt\n")
-            fileDarknet.write("valid=projects/" + projectName + "/test.txt\n")
+            fileDarknet.write("train= " + darknet + "/train.txt\n")
+            fileDarknet.write("valid= " + darknet + "/test.txt\n")
             fileDarknet.write("names= " + darknet + "/obj.names\n")
             fileDarknet.write("backup=" + darknet + "/backup/")
             fileDarknet.close()

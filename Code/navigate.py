@@ -1,26 +1,25 @@
-import sys
-
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QHeaderView, QPushButton, QApplication
+from PyQt5.QtWidgets import QDialog, QHeaderView, QPushButton
 
 from Code.File.projectsManage import ProjectsManage
-# from Code.MainUI import MainUI
 from Code.MainUI import MainUI
 from Code.configurate import Configurate
 from Code.confirmAlert import ConfirmAlert
 from Code.newProject import NewProject
 from GUI.Ui_navigate import Ui_Navigate
 
+
 class Navigate(QDialog, Ui_Navigate):
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
         self.projectsManage = ProjectsManage()
         self.projectList = self.projectsManage.getProjectsList()
 
         self.initTable()
+
         self.__setUIStyle()
 
     @pyqtSlot()
@@ -43,13 +42,16 @@ class Navigate(QDialog, Ui_Navigate):
         self.tableWidget.verticalHeader().setVisible(False)  # 隐藏垂直表头
         self.tableWidget.horizontalHeader().setVisible(False)  # 隐藏水平表头
 
+
+
         rowCount = len(self.projectList)
         self.tableWidget.setRowCount(rowCount)
 
         i = 0
-        for pro in self.projectList:
+        for projectName in self.projectList:
             # 向表格中填充按钮
-            buttonOpen = QPushButton(pro)
+
+            buttonOpen = QPushButton(projectName)
             buttonDel = QPushButton()
 
             buttonDel.setIcon(QIcon("ArtRes/del.png"))
@@ -58,6 +60,8 @@ class Navigate(QDialog, Ui_Navigate):
             self.tableWidget.setCellWidget(i, 0, buttonOpen)
             self.tableWidget.setCellWidget(i, 1, buttonDel)
             i += 1
+
+        self.tableWidget.setCurrentCell(-1,0)#不加此行时，表格在初始化的时候第一行会被选中（显示高亮
 
     def buttonOpen_clicked(self):
 
@@ -73,7 +77,7 @@ class Navigate(QDialog, Ui_Navigate):
 
     def buttonDel_clicked(self):
 
-        global row
+        # global row
         button = self.sender()
         if button:
             row = self.tableWidget.indexAt(button.pos()).row()
@@ -89,11 +93,9 @@ class Navigate(QDialog, Ui_Navigate):
     def getNewProjectSignal(self, tag, name):
 
         if tag == 1:
-
             self.MainUi = MainUI(name)
             self.MainUi.show()
             self.close()
-
 
     def getConfirmAlertSignal(self, tag):  # 返回0，表示取消
 
@@ -106,24 +108,20 @@ class Navigate(QDialog, Ui_Navigate):
     # 本页面的UI设置
     def __setUIStyle(self):
 
-        self.setWindowModality(Qt.ApplicationModal)#设置其他界面不可点击
+        self.setWindowModality(Qt.ApplicationModal)  # 设置其他界面不可点击
         self.setWindowIcon(QIcon('ArtRes/start.png'))
         self.setFixedSize(self.width(), self.height())  # 固定界面尺寸
-        self.setStyleSheet(
+        self.setStyleSheet("QDialog{background-image:url(ArtRes/backgroudBlack.png)}"
+                           "QLabel{background-color:rgb(255,255,255,0);border-radius: 9px;font-size:24px}"
+                           "QLabel{color:#F5FFFA}"
+                           "QLabel{font-size:24px;font-family:'楷体'}"
+                           "QPushButton{background:rgb(255,255,255,0);border-radius:5px;}"
+                           "QPushButton{font-size:35px;font-family:'楷体'}"
+                           "QPushButton:hover{background:#afb4db;}"
+                           "QPushButton{text-align:left}"
+                           "QPushButton{color:#F5FFFA}"
 
-            "QLabel{background-color:rgb(255,255,255,0);border-radius: 9px;;font-size:24px}"
-            "QLabel{color:#F5FFFA}"
-            "QLabel{font-size:24px;font-family:'楷体'}"
-
-            "QPushButton{font-size:35px;font-family:'楷体'}"
-            "QDialog{background-image:url(ArtRes/backgroudBlack.png)}"
-
-            "QPushButton{background:rgb(255,255,255,0);border-radius:5px;}"
-            "QPushButton:hover{background:#afb4db;}"
-            "QPushButton{color:#F5FFFA}"
-            "QPushButton{text-align:left}"
-
-        )
+                           )
 
         self.tableWidget.setStyleSheet("QTableWidget{background:rgb(100,100,100,0)}"
                                        "QTableWidget{border-style:none}:"
@@ -141,3 +139,4 @@ class Navigate(QDialog, Ui_Navigate):
 
         self.pushButtonNew.setIcon(QIcon('ArtRes/add.png'))
         self.pushButtonSetting.setIcon(QIcon('ArtRes/cfg.png'))
+        # self.tableWidget.setc

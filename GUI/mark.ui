@@ -201,6 +201,9 @@
                  <property name="flow">
                   <enum>QListView::TopToBottom</enum>
                  </property>
+                 <property name="isWrapping" stdset="0">
+                  <bool>false</bool>
+                 </property>
                  <property name="itemAlignment">
                   <set>Qt::AlignCenter</set>
                  </property>

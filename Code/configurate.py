@@ -17,12 +17,11 @@ class Configurate(QDialog, Ui_Configurate):
         self.setupUi(self)
         self.__setUIStyle()
 
-
         # 读取文件配置信息
         self.__cfgfile = CfgFile()
         self.__dic = self.__cfgfile.cfgRead()
         # self.__RowList = ['Yolo_mark', 'conv','darknet', 'data', 'cfg', 'weights']  # 此行代码异常重要,保存的是data\cfg.xml中的键
-        self.__RowList = ['Yolo_mark', 'darknet']  # 此行代码异常重要,保存的是data\cfg.xml中的键
+        self.__RowList = ['Yolo_mark', 'conv', 'darknet']  # 此行代码异常重要,保存的是data\cfg.xml中的键
 
         self.__fillTable()  # 填充表格内容
 
@@ -66,16 +65,15 @@ class Configurate(QDialog, Ui_Configurate):
 
     def button_clicked(self):
 
-
-        fileDir={0,1}#有的路径是文件、有的路径是文件夹，其中这个集合中的是文件夹
+        fileDir = {0, 1}  # 有的路径是文件、有的路径是文件夹，其中这个集合中的是文件夹
         button = self.sender()
         row = -1  # 初始化行数
         if button:
             row = self.tableWidget.indexAt(button.pos()).row()
 
-        filePath=None
+        filePath = None
         if row in fileDir:
-            filePath=QFileDialog.getExistingDirectory(self)
+            filePath = QFileDialog.getExistingDirectory(self)
             print(filePath)
         else:
             filePath, i = QFileDialog.getOpenFileName(self, "选择文件", "")
@@ -84,17 +82,16 @@ class Configurate(QDialog, Ui_Configurate):
         if filePath == "":
             return
 
-
         item = QTableWidgetItem(str(filePath))
         self.tableWidget.setItem(row, 0, item)
 
     def __setUIStyle(self):
 
-
-        self.setWindowModality(Qt.ApplicationModal)#设置其他界面不可点击
+        self.setWindowModality(Qt.ApplicationModal)  # 设置其他界面不可点击
 
         self.setWindowIcon(QIcon('ArtRes/setting.png'))
-        self.setStyleSheet(
-                           "QDialog{background-image:url(ArtRes/backgroudBlack.png)}"
-                           "QPushButton{background:#afb4db;border-radius:5px;}QPushButton:hover{background:#9AFF9A;}"
+        self.setStyleSheet("QDialog{background-image:url(ArtRes/backgroudBlack.png)}"
+                           "QPushButton{background:rgb(255,255,255,26);border-radius:5px;}"
+                           "QPushButton:hover{background:green;}"
+                           "QPushButton{color:#F5FFFA}"
                            )

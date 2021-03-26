@@ -15,6 +15,10 @@ class ProjectSetting():
 
     def getObjNames(self):
         with open(self.__filePath, 'r') as file:
-            nameList = file.readlines()
 
-        return nameList
+            nameList = file.readlines()
+            names=[]
+            for name in nameList:
+                names.append(name.replace("\n",""))
+
+        return names

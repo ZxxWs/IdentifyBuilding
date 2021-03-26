@@ -77,13 +77,13 @@ class Train(QDialog, Ui_Train):
         os.popen(CMD)
 
     @pyqtSlot(str)
-    def on_comboBoxBatch_currentIndexChanged(self,batch):
+    def on_comboBoxBatch_currentIndexChanged(self, batch):
         if self.__initTag:
             return
         self.settingYoloObjCfg.setBatch(batch)
 
     @pyqtSlot(str)
-    def on_comboBoxSubdivision_currentIndexChanged(self,subdivision):
+    def on_comboBoxSubdivision_currentIndexChanged(self, subdivision):
         if self.__initTag:
             return
 
@@ -95,7 +95,7 @@ class Train(QDialog, Ui_Train):
         self.parent().show()
 
     def __loadingJPG(self):
-        prefix = "projects/" + self.projectName + "/train/"  # 填写的前缀
+        prefix = self.projectPath + "train/"  # 填写的前缀
         with open(self.projectPath + 'train.txt', 'w') as trainTXT:
             fileNames = os.listdir(self.projectPath + "train/")
 
@@ -137,3 +137,9 @@ class Train(QDialog, Ui_Train):
                            "QLabel{font-size:35px;font-family:'楷体'}"
                            "QComboBox{border-radius:17px}"
                            )
+        self.pushButtonTrain.setIcon(QIcon("ArtRes/start.png"))
+        self.pushButtonOpenDir.setIcon(QIcon("ArtRes/file.png"))
+        self.pushButtonBack.setIcon(QIcon("ArtRes/Cancel.png"))
+        self.pushButtonMove.setIcon(QIcon("ArtRes/move.png"))
+        self.pushButtonMove.setToolTip("将标注好的文件转移到此文件夹下")
+        # self.pushButtonMove.toolTip().
