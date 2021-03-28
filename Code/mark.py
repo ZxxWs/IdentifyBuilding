@@ -34,7 +34,7 @@ class Mark(QDialog, Ui_Mark):
 
         if self.runTag == 0:
 
-            self.loadingJPG()
+            self.loadingJPG()#装载图片
             self.runTag = 1
             self.pushButton.setText("停止标注")
             self.__runMark()
@@ -68,8 +68,8 @@ class Mark(QDialog, Ui_Mark):
         path = self.__cfgDic['Yolo_mark']  # mark文件路径
         CMD = path + "/yolo_mark.exe " + self.projectPath + "img " + self.projectPath + "train.txt " + self.projectPath + "obj.names"
 
-        print(CMD)
-        os.popen(CMD)
+        # print(CMD)
+        os.popen(CMD)#此处的CMD命令直接进行执行，并未主动用多线程
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.parent().show()
@@ -82,29 +82,24 @@ class Mark(QDialog, Ui_Mark):
     def __initListView(self):
 
         self.listView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 列表不可点击
-
+        #获取项目名列表进行填充
         projectSetting = ProjectSetting(self.projectName)
         objNames = projectSetting.getObjNames()
         slm = QStringListModel()  # 创建mode
         slm.setStringList(objNames)  # 将数据设置到model
         self.listView.setModel(slm)  ##绑定 listView 和 model
 
-
         # self.listView.setItemAlignment(Qt.AlignRight)
         self.listView.setItemAlignment(Qt.AlignCenter)  # 此行需要在PyQt5.12上运行
-        print(objNames)
 
     # 点击“标注”按钮后触发的，创建并写入train.txt文件
-
     def loadingJPG(self):
 
-        prefix = "projects/" + self.projectName + "/img/"
+        prefix = "projects/" + self.projectName + "/img/"#需要填充的前缀
         with open(self.projectPath + 'train.txt', 'w') as trainTXT:
             fileNames = os.listdir(self.projectPath + "img/")
-            # print(fileNames)
             for fileName in fileNames:
                 if fileName[-4:] == ".jpg":
-                    # print(fileName)
                     trainTXT.write(prefix + fileName + "\n")
             trainTXT.close()
 

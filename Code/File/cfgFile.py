@@ -9,6 +9,44 @@ class CfgFile():
         self.__xml = {}  # 获取到的xml数据
         self.__path = os.getcwd() + "/Data/cfg.xml"  # 整个软件的配置
         # 此处未设置错误检测，如果文件夹不存在怎么办--------------------------------------------------------
+        self.__tree=None
+        self.__root=None
+
+        #错误检测
+        if not os.path.exists(self.__path):
+            with open(self.__path, mode="w", encoding="utf-8") as f:  # 写文件,当文件不存在时,就直接创建此文件
+                f.close()
+
+                root = et.Element('MyAppCfg')
+                # # 添加子节点SubElement(父节点Element对象， Tag字符串格式， Attribute字典格式)
+                child1 = et.SubElement(root, 'Yolo_mark',{})
+                child2 = et.SubElement(root, 'darknet',{})
+                child3 = et.SubElement(root, 'conv',{})
+                # root = et.Element('lab')
+                # 添加子节点SubElement(父节点Element对象， Tag字符串格式， Attribute字典格式)
+                # person1 = et.SubElement(root, 'person', {'name': 'Blue'})
+                # 添加子节点
+                # age1 = et.SubElement(person1, 'age')
+                # 添加text，即22，字符串格式
+                # age1.text = '22'
+                # gender1 = et.SubElement(person1, 'gender')
+                # gender1.text = 'male'
+                # person2 = et.SubElement(root, 'person', {'name': 'Yellow'})
+                # age2 = et.SubElement(person2, 'age')
+                # age2.text = '20'
+                # gender2 = et.SubElement(person2, 'gender')
+                # gender2.text = 'female'
+                # 将根目录转化为xml树状结构(即ElementTree对象)
+                tree = et.ElementTree(root)
+                # 在终端显示整个xml内容
+                et.dump(root)
+                # 写入xml文件
+                tree.write(self.__path, encoding="utf-8", xml_declaration=True)
+
+
+                pass
+           # txt=
+
 
     def cfgRead(self):
 

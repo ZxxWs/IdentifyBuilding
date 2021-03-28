@@ -107,8 +107,17 @@ class Test(QDialog, Ui_Test):
         os.system("taskkill /f /im darknet.exe")
         self.parent().show()
 
+
+    #初始化下拉列表（权重文件的下拉列表
     def __initComboBox(self):
         weightList = os.listdir(self.projectPath + "backup/")
+        #如果没有权重文件，则锁住UI
+        if len(weightList)==0:
+            self.__lockUI(True)
+            txt="未检测到权重文件,请先训练权重或者将权重文件放于"+self.projectPath+"backup/文件夹下再刷新此界面"
+            self.labelImage.setText(txt)
+            return
+
         self.comboBoxWeight.addItems(weightList)
 
     def __initLabel(self):
@@ -118,7 +127,7 @@ class Test(QDialog, Ui_Test):
     # 在执行训练函数后锁定一些UI，禁止点击或改动。如果介绍训练，则可以改动、点击.tag为bool
     def __lockUI(self, tag=True):
         self.pushButtonSelect.setDisabled(tag)
-        self.pushButtonBack.setDisabled(tag)
+        # self.pushButtonBack.setDisabled(tag)
         self.pushButtonWeight.setDisabled(tag)
         self.pushButtonTest.setDisabled(tag)
         self.pushButtonOpenDir.setDisabled(tag)
@@ -145,6 +154,7 @@ class Test(QDialog, Ui_Test):
             self.labelImage.setText(content)
             self.__lockUI(False)
 
+    # 获取执行CMD后的数据---------------------------------废弃代码，但不能删除，因为执行test的时候需要主动使用多线程，但却又不能主动返回数据
     def __getTest(self, content):
 
         if content == "":
@@ -156,6 +166,8 @@ class Test(QDialog, Ui_Test):
             print(content)
             self.__lockUI(False)
 
+
+    #本页面UI格式控制
     def __setUIStyle(self):
 
         self.setWindowIcon(QIcon('ArtRes/mark.png'))
@@ -185,4 +197,3 @@ class Test(QDialog, Ui_Test):
         self.pushButtonTest.setIcon(QIcon("ArtRes/start.png"))
         self.pushButtonSelect.setIcon(QIcon("ArtRes/file.png"))
         self.pushButtonBack.setIcon(QIcon("ArtRes/Cancel.png"))
-        # self.push

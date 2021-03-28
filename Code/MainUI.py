@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QMainWindow
 
+from Code.about import About
 from Code.configurate import Configurate
 from Code.newProject import NewProject
 from Code.openProject import OpenProject
@@ -19,12 +20,6 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.projectName = projectName
         self.__setUIStyle()
-
-    # 打开配置界面
-    @pyqtSlot()
-    def on_actionCfg_triggered(self):
-        self.cfgUI = Configurate(self)
-        self.cfgUI.show()
 
 
 
@@ -43,6 +38,18 @@ class MainUI(QMainWindow, Ui_MainWindow):
         self.openProject = OpenProject()
         self.openProject.OpenProjectSignal.connect(self.getOpenProjectSignal)  # 将子界面的信号量和本类中的方法绑定
         self.openProject.show()
+
+    # 打开配置界面
+    @pyqtSlot()
+    def on_actionCfg_triggered(self):
+        self.cfgUI = Configurate(self)
+        self.cfgUI.show()
+
+    # 打开关于界面
+    @pyqtSlot()
+    def on_actiongAbout_triggered(self):
+        self.about = About(self)
+        self.about.show()
 
     # 打开标注界面
     @pyqtSlot()

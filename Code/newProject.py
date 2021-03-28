@@ -1,4 +1,6 @@
 # from PyQt5.QtCore import pyqtSlot
+import re
+
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon, QColor, QBrush
 from PyQt5.QtWidgets import QDialog, QHeaderView, QPushButton, QTableWidgetItem
@@ -24,11 +26,18 @@ class NewProject(QDialog, Ui_NewProject):
     @pyqtSlot()
     def on_pushButtonOK_clicked(self):
 
-        # --------------------------------------------此处未做输入验证——————————————————————————
         # 获取用户输入的新建信息
         name = self.lineEdit.text()
+
+        #对输入的项目名正则检测处理
+        pattern = re.compile('^[A-Za-z][A-Za-z0-9_]{1,10}$')
+        reName=pattern.findall(name)
+        if len(reName)==0:
+            self.labelAlert.setText("项目命名不规范,以字母命名，后可接字母、数字及下划线,长度最多为10位")
+            self.lineEdit.clear()
+            return
         projectsManage = ProjectsManage()
-        nameSet = projectsManage.getProjectsList()
+        nameSet = projectsManage.getProjectsList()#获取已近存在的项目名
         if name in nameSet:
             self.labelAlert.setText("该项目已存在，请更改项目名称")
             self.lineEdit.clear()
@@ -38,22 +47,20 @@ class NewProject(QDialog, Ui_NewProject):
             self.lineEdit.clear()
             return
         elif name == "":
-            self.labelAlert.setText("项目名不能为空")
+            self.labelAlert.setText("项目名不能为空")#此行代码有点多余，因为已近有了上面的正则处理
             self.lineEdit.clear()
             return
         elif len(self.__NameList) == 0:
             self.labelAlert.setText("识别及标记种类至少为一个")
-            # self.lineEdit.clear()
             return
         else:
             projectsManage.newProject(name, self.__NameList)
-            # 向父界面传递信号
+            # 向父界面传递信号，信号值为新建项目名
             self.NewProjectSignal.emit(self.father, name)
-            # -----------此处可以设置为打开新的项目
-
-        # --------------------------------------------此处未做输入验证——————————————————————————
 
         self.close()
+
+
 
     def closeEvent(self, event):
         # self.NewProjectSignal.emit("close")
@@ -63,17 +70,16 @@ class NewProject(QDialog, Ui_NewProject):
     def on_pushButtonCancel_clicked(self):
 
         self.close()
-        pass
 
-        # 本页面的UI设置
 
+    #初始化UI时初始化表格函数
     def __initTable(self):
 
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         self.tableWidget.verticalHeader().setVisible(False)  # 隐藏垂直表头
 
-        self.tableWidget.setRowCount(1)
+        self.tableWidget.setRowCount(1)#设置表格行数为1
         # 填加最后一行的“添加”按钮
         button = QPushButton("添加标注类型")
         button.setIcon(QIcon("ArtRes/addName.png"))
@@ -82,9 +88,12 @@ class NewProject(QDialog, Ui_NewProject):
 
         self.__flashTableTag = False  # 这个tag是用于刷新表格的死锁tag
 
+
+    #点击“添加标注种类按钮”
     def Addbutton_clicked(self):
 
-        self.__addItemTag = True
+        self.__addItemTag = True#tag用于死锁一些东西（忘了锁的啥
+
         listLen = len(self.__NameList)
         if listLen + 1 < self.tableWidget.rowCount():
             return
@@ -98,7 +107,7 @@ class NewProject(QDialog, Ui_NewProject):
                              "QPushButton:hover{background:#9AFF9A;color:black}")
         self.tableWidget.setCellWidget(listLen, 1, button)
 
-        self.on_tableWidget_cellChanged()
+        self.on_tableWidget_cellChanged()#触发一下表格改变函数进行刷新表格
 
     def Delbutton_clicked(self):
 
@@ -107,8 +116,8 @@ class NewProject(QDialog, Ui_NewProject):
             row = self.tableWidget.indexAt(button.pos()).row()
         # 删除按钮
 
-        self.tableWidget.removeRow(row)
-        self.on_tableWidget_cellChanged()
+        self.tableWidget.removeRow(row)#将表格的一行删除（点击的哪行删除哪行
+        self.on_tableWidget_cellChanged()#刷新表格
 
     @pyqtSlot(int, int)
     def on_tableWidget_cellChanged(self):
@@ -124,17 +133,18 @@ class NewProject(QDialog, Ui_NewProject):
         self.__NameList.clear()
         row = self.tableWidget.rowCount()
         for i in range(row - 1):  # 最后一行不参与统计（最后一行为按钮）
-            if self.tableWidget.item(i, 0) is not None:
-                if self.tableWidget.item(i, 0).text() != "":
+            if self.tableWidget.item(i, 0) is not None:#空的不算
+                if self.tableWidget.item(i, 0).text() != "":#空字符不算
                     if self.tableWidget.item(i, 0).text() not in self.__NameList:
                         self.__NameList.append(self.tableWidget.item(i, 0).text())
 
-        self.flashTable()
+        self.flashTable()#执行刷新表格函数
 
+
+    #在table发生改变后执行刷新表格函数（但需要看情况刷新
     def flashTable(self):
         self.__flashTableTag = True
-        self.tableWidget.clearContents()
-
+        self.tableWidget.clearContents()#清除表格内容
         self.tableWidget.setRowCount(len(self.__NameList) + 1)
 
         for i in range(len(self.__NameList)):
@@ -148,6 +158,8 @@ class NewProject(QDialog, Ui_NewProject):
             button.setStyleSheet("QPushButton{background:rgb(255,255,255,17);border-radius:5px;}"
                                  "QPushButton:hover{background:#9AFF9A;color:black}")
             self.tableWidget.setCellWidget(i, 1, button)
+
+        #在将表格填充好后，在最后一行加入添加按钮
         button = QPushButton("添加标注类型")
         button.setIcon(QIcon("ArtRes/addName.png"))
         button.clicked.connect(self.Addbutton_clicked)
@@ -185,3 +197,5 @@ class NewProject(QDialog, Ui_NewProject):
         self.setWindowIcon(QIcon('ArtRes/addName.png'))
         self.pushButtonCancel.setIcon(QIcon("ArtRes/Cancel.png"))
         self.pushButtonOK.setIcon(QIcon("ArtRes/OK.png"))
+        self.labelAlert.setWordWrap(True)#label根据内容可以换行
+        self.pushButtonOK.setFocus()#将初始化后的焦点设置到确认按钮上，如果不设置会导致初始化后输入回车键使得界面关闭（焦点在取消上

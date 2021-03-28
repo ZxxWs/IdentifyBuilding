@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 
 from Code.File.projectSetting import ProjectSetting
 from Code.File.projectsManage import ProjectsManage
@@ -10,42 +11,41 @@ sys.path.append('../../../../CV/darknet/build/darknet/x64/darknet.py')
 from Code.File.cfgFile import CfgFile
 
 
-def RunDarknet(dic,image):
-
+def RunDarknet(dic, image):
     a = CfgFile()
     dic = a.cfgRead()
     image = r'D:\CV\darknet\build\darknet\x64\Zxx\test\000751.jpg'
 
     '''原命令darknet.exe detector test data/obj.data yolo-obj.cfg yolo-obj_8000.weights'''
 
-
-
     CMD = dic['darknet'] + " detector test " + dic['data'] + " " + dic['cfg'] + " " + dic['weights'] + " " + image
 
     a = os.popen(CMD)
-    print("111111111111111111111111111111111111111111111111111111111111111111111111111111111\n\n\n")
+    # print("111111111111111111111111111111111111111111111111111111111111111111111111111111111\n\n\n")
     # print(a.read())
-    print("\n\n\n111111111111111111111111111111111111111111111111111111111111111111111111111111111")
+    # print("\n\n\n111111111111111111111111111111111111111111111111111111111111111111111111111111111")
     # if a!=None:
 
-        # print("\n\n\-----------------------------n\n\n")
+    # print("\n\n\-----------------------------n\n\n")
+
 
 def getBatch(path):
     batch = -1
     with open(path, 'r') as file:
-        doc=file.readlines()
+        doc = file.readlines()
         for line in doc:
-            if line.find("batch=", 0, 6)!=-1:
-                print(line)
-                batch=int(line[6:])
+            if line.find("batch=", 0, 6) != -1:
+                # print(line)
+                batch = int(line[6:])
                 return batch
 
 
 if __name__ == '__main__':
 
     # a = CfgFile()
-    # # a.getInfor("mark")
+    # a.getInfor("mark")
     # dic = a.cfgRead()
+    # print(dic)
     # FileDir = dic['Yolo_mark'] + '/data/img/'
     # f=str(FileDir).replace("/",'\\')
     # print(f)
@@ -74,8 +74,8 @@ if __name__ == '__main__':
     # print(a)
     # for i in range(10,0,1)
     # with open(dirs,'+') as file:
-        # a=file.readlines()
-        # print(a)
+    # a=file.readlines()
+    # print(a)
 
     # a=ProjectsManage()
     # a.delProject("aaa")
@@ -91,18 +91,16 @@ if __name__ == '__main__':
     # b = a.getSubdivisions()
     # print(b)
 
-    a=ProjectSetting("A")
-    b=a.getObjNames()
-    print(b)
+    # a=ProjectSetting("A")
+    # b=a.getObjNames()
+    # print(b)
+
+    while True:
+        get = input("输入字符串")
+        pattern = re.compile('^[A-Za-z][A-Za-z0-9_]{1,10}$')
+        rr=pattern.findall(get)
+        print(rr)
+
+        # print(pattern)
+        # print(re.compile())
     pass
-
-
-
-
-
-
-
-
-
-
-

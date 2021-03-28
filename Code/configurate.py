@@ -1,4 +1,3 @@
-# from PyQt5 import Qt
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QHeaderView, QTableWidgetItem, QPushButton, QFileDialog
@@ -21,10 +20,11 @@ class Configurate(QDialog, Ui_Configurate):
         self.__cfgfile = CfgFile()
         self.__dic = self.__cfgfile.cfgRead()
         # self.__RowList = ['Yolo_mark', 'conv','darknet', 'data', 'cfg', 'weights']  # 此行代码异常重要,保存的是data\cfg.xml中的键
-        self.__RowList = ['Yolo_mark', 'conv', 'darknet']  # 此行代码异常重要,保存的是data\cfg.xml中的键
+        self.__RowList = ['Yolo_mark', 'darknet', 'conv']  # 此行代码异常重要,保存的是data\cfg.xml中的键
 
         self.__fillTable()  # 填充表格内容
 
+    # 点击确认按钮后的触发事件
     @pyqtSlot()
     def on_pushButtonVerify_clicked(self):
 
@@ -33,6 +33,7 @@ class Configurate(QDialog, Ui_Configurate):
             self.__dic[self.__RowList[i]] = item
 
         self.__cfgfile.cfgWrite(self.__dic)
+        self.close()
 
     @pyqtSlot()
     def on_pushButtonCancel_clicked(self):
@@ -57,7 +58,7 @@ class Configurate(QDialog, Ui_Configurate):
 
             # 添加按钮
             button = QPushButton()
-
+            # 按钮逻辑绑定、图标设置
             button.setIcon(QIcon("ArtRes/file.png"))
             button.clicked.connect(self.button_clicked)
             self.tableWidget.setCellWidget(i, 1, button)
@@ -71,19 +72,19 @@ class Configurate(QDialog, Ui_Configurate):
         if button:
             row = self.tableWidget.indexAt(button.pos()).row()
 
-        filePath = None
-        if row in fileDir:
-            filePath = QFileDialog.getExistingDirectory(self)
-            print(filePath)
-        else:
-            filePath, i = QFileDialog.getOpenFileName(self, "选择文件", "")
+            filePath = None
+            if row in fileDir:
+                filePath = QFileDialog.getExistingDirectory(self)
+                print(filePath)
+            else:
+                filePath, i = QFileDialog.getOpenFileName(self, "选择文件", "")
 
-        # 防止点击按钮后取消导致配置为空
-        if filePath == "":
-            return
+            # 防止点击按钮后取消导致配置为空（？？？？几天后没看懂
+            if filePath == "":
+                return
 
-        item = QTableWidgetItem(str(filePath))
-        self.tableWidget.setItem(row, 0, item)
+            item = QTableWidgetItem(str(filePath))
+            self.tableWidget.setItem(row, 0, item)
 
     def __setUIStyle(self):
 
