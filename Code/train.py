@@ -142,4 +142,3 @@ class Train(QDialog, Ui_Train):
         self.pushButtonBack.setIcon(QIcon("ArtRes/Cancel.png"))
         self.pushButtonMove.setIcon(QIcon("ArtRes/move.png"))
         self.pushButtonMove.setToolTip("将标注好的文件转移到此文件夹下")
-        # self.pushButtonMove.toolTip().
