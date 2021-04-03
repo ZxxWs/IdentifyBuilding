@@ -8,6 +8,7 @@ from PyQt5.QtCore import QThread
 
 
 class RunCMD(QThread):
+
     RunCMDSignal = QtCore.pyqtSignal(str)  # 返回的数据
 
     # 参数CMD是执行的命令，head，end是cmd执行后的输出内容列表化的头尾
@@ -18,7 +19,7 @@ class RunCMD(QThread):
         self.end = end
 
     def run(self):
-        print("\n线程执行\n")
+        print("\nRunCMD线程执行\n")
         self.RunCMDSignal.emit("")
         output = os.popen(self.CMD)
         content = output.readlines()

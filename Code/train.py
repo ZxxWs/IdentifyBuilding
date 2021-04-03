@@ -94,6 +94,7 @@ class Train(QDialog, Ui_Train):
         os.system("taskkill /f /im darknet.exe")
         self.parent().show()
 
+    #将训练文件下的文件装到train.txt中
     def __loadingJPG(self):
         prefix = self.projectPath + "train/"  # 填写的前缀
         with open(self.projectPath + 'train.txt', 'w') as trainTXT:
