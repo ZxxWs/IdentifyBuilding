@@ -74,9 +74,11 @@ class MainUI(QMainWindow, Ui_MainWindow):
 
     def getNewProjectSignal(self, tag, name):
         if tag == 2:
-            self.MainUi = MainUI(name)
-            self.MainUi.show()
-            self.close()
+            self.projectName = name
+            self.setWindowTitle("图像识别系统——" + self.projectName)
+            # self.MainUi = MainUI(name)
+            # self.MainUi.show()
+            # self.close()
 
     def getOpenProjectSignal(self, name):
         self.projectName = name

@@ -128,7 +128,7 @@ class Test(QDialog, Ui_Test):
 
         if object == self.labelImage:
             if self.__childImage is None:
-                print("labelImage为空")
+                # print("labelImage为空")
                 pass
             else:
                 if event.type() == QEvent.MouseButtonPress:
