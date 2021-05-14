@@ -6,7 +6,7 @@ import cv2
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import pyqtSlot, Qt, QEvent
 from PyQt5.QtGui import QIcon, QImage, QPixmap
-from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtWidgets import QDialog, QWidget, QTableWidgetItem
 
 from Code.File.cfgFile import CfgFile
 from Code.API import useAPI as UseAPI
@@ -46,7 +46,10 @@ class Test(QDialog, Ui_Test):
 
     @pyqtSlot()
     def on_pushButtonSelect_clicked(self):
+        ''' 选择单张检测的照片的按钮方法'''
 
+
+        self.tableWidget.hide()
         try:
             imageName, imgType = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", self.projectPath + 'test/',
                                                                        "*.jpg;;*.png;;All Files(*)")  # 这一行代码是网上找的，并未细看
@@ -70,6 +73,9 @@ class Test(QDialog, Ui_Test):
 
     @pyqtSlot()
     def on_pushButtonWeight_clicked(self):
+        '''开始检测权重的方法'''
+
+        self.tableWidget.hide()
 
         if self.__pushButtonWeightTag == 0:
             self.__lockUI(True)  # 点击按钮后锁住UI
@@ -120,11 +126,11 @@ class Test(QDialog, Ui_Test):
     # 定义鼠标指向、离开控件的事件
     def eventFilter(self, object, event):
 
-        if object == self.pushButtonShow:
-            if event.type() == QEvent.Enter:
-                self.labelShow.show()
-            if event.type() == QEvent.Leave:
-                self.labelShow.hide()
+        # if object == self.pushButtonShow:
+        #     if event.type() == QEvent.Enter:
+        #         self.tableWidget.show()
+        #     if event.type() == QEvent.Leave:
+        #         self.tableWidget.hide()
 
         if object == self.labelImage:
             if self.__childImage is None:
@@ -142,11 +148,16 @@ class Test(QDialog, Ui_Test):
 
     @pyqtSlot(str)
     def on_comboBoxWeight_currentIndexChanged(self, weightName):
+        '''权重列表发生变化的方法'''
+
+        self.tableWidget.hide()
         self.weightName = weightName
 
     def closeEvent(self, a0: PyQt5.QtGui.QCloseEvent) -> None:
-
-        os.system("taskkill /f /im darknet.exe")
+        try:
+            os.system("taskkill /f /im darknet.exe")
+        except:
+            pass
         self.parent().show()
 
     # 初始化下拉列表（权重文件的下拉列表
@@ -176,12 +187,12 @@ class Test(QDialog, Ui_Test):
     def __initUI(self):
         txt = "将测试集文件放置于" + self.projectPath + "test/文件夹下"
         self.labelOpenDir.setText(txt)
-        self.pushButtonShow.hide()
-        self.pushButtonShow.installEventFilter(self)  # 给按钮添加事件过滤器
+        # self.pushButtonShow.hide()
+        # self.pushButtonShow.installEventFilter(self)  # 给按钮添加事件过滤器
         self.labelImage.installEventFilter(self)
         # self.labelImage.installEventFilter(self)  # 给label添加事件过滤器
-        self.pushButtonShow.setToolTip("识别后的信息")
-        self.labelShow.hide()
+        # self.pushButtonShow.setToolTip("识别后的信息")
+        self.tableWidget.hide()
 
     # 在执行训练函数后锁定一些UI，禁止点击或改动。如果介绍训练，则可以改动、点击.tag为bool
     def __lockUI(self, tag=True):
@@ -193,7 +204,7 @@ class Test(QDialog, Ui_Test):
         self.lineEdit.setDisabled(tag)
         self.comboBoxWeight.setDisabled(tag)
         if tag:
-            self.pushButtonShow.hide()
+            # self.pushButtonShow.hide()
             self.__childImage = None
 
     def __loadingJPG(self):
@@ -207,7 +218,6 @@ class Test(QDialog, Ui_Test):
 
     # 获取执行RunCMD线程后的数据
     def __getWeight(self, content):
-        print("线程结束")
         if content == "":
             # 子线程刚执行
             txt = "程序加载中，请稍等......"
@@ -215,6 +225,11 @@ class Test(QDialog, Ui_Test):
         else:
             self.labelImage.setText(content)
             self.__lockUI(False)
+
+            try:
+                os.system("taskkill /f /im darknet.exe")
+            except:
+                pass
 
     # 执行多DetectImage线程后的结果获取
     def __getDetectImage(self, tag, detections, class_colors):
@@ -227,8 +242,6 @@ class Test(QDialog, Ui_Test):
             self.labelImage.setText("网络加载完成\n图片加载完成\n开始检测图片")
         elif tag == 3:
 
-            # print(detections)
-            # print(class_colors)
             cvImage = cv2.imread(self.imageName)
             image = UseAPI.draw_boxes(detections, cvImage, class_colors)
 
@@ -240,67 +253,54 @@ class Test(QDialog, Ui_Test):
             # 使用label进行显示
             self.labelImage.setPixmap(pixmap_image)
 
-            # imagePath = str(self.image).encode("utf-8")  # 不加后边的utf-8会导致程序错误
-            # print(self.image)
-            # self.getImage=GetImage(self.image)
-            # self.getImage.start()
-            # return
-            # print(type(imagePath))
-            # darknet.load_image(imagePath, 0, 0)
-            # print(imagePath)
-
-            # detections=darknet.detect_image(network, class_names, image)
-            import darknet
-            # image = cv2.imread(self.imageName)
-            # getImage=darknet.draw_boxes(detections, img, class_colors)
-
-            #
-            # cv2.imshow("fff", getImage)
-            # cv2.waitKey(0)
-
             self.__printLabelShow(detections)
             self.__lockUI(False)
-            self.pushButtonShow.show()
             print("__getTest子线程执行完毕")
         else:
             pass
 
-    '''
-    执行多GetWeightsFile线程后的结果获取
-    这里有个BUG：在子线程执行完毕后，会返回一个tag，标志权重文件夹下有文件，但如果当时正在移动文件会导致此处代码只能读取到部分文件。
-    '''
-
-    # 废弃代码-可删除
-    def __getWeightFile(self, tag):
-        if tag == 1:
-            self.__pushButtonWeightTag = 2  # 表示有权重文件
-            self.pushButtonWeight.setText("刷新权重")
-            self.labelImage.clear()
 
     # 向LabelShow中写入内容
     def __printLabelShow(self, detections):
-        # print(detections)
-        if detections == "":
-            self.labelShow.clear()
-        else:
-            objCount = 0
-            objNames = set()
-            objDict = {}
-            for line in detections:
-                objCount += 1
-                if line[0] not in objNames:
-                    objNames.add(line[0])
-                    objDict[line[0]] = 1
-                else:
-                    objDict[line[0]] += 1
-            showTxt = "图片中共有" + str(objCount) + "个物体\n其中"
-            for name in objDict:
-                showTxt += name
-                showTxt += "共"
-                showTxt += str(objDict[name])
-                showTxt += "个\n"
 
-            self.labelShow.setText(showTxt)
+        self.tableWidget.clearContents()
+        self.tableWidget.show()
+        print(detections)
+
+        buildingCount = 0
+        for label, confidence, bbox in detections:
+            self.tableWidget.insertRow(buildingCount)
+            self.tableWidget.setItem(buildingCount, 0, QTableWidgetItem(str(confidence)))
+            self.tableWidget.setItem(buildingCount, 1, QTableWidgetItem(str(bbox[0])))
+            self.tableWidget.setItem(buildingCount, 2, QTableWidgetItem(str(bbox[1])))
+            self.tableWidget.setItem(buildingCount, 3, QTableWidgetItem(str(bbox[2])))
+            self.tableWidget.setItem(buildingCount, 4, QTableWidgetItem(str(bbox[3])))
+            buildingCount+=1
+            pass
+
+
+        # if detections == "":
+        #     # self.tableWidget.clear()
+        #     pass
+        # else:
+        #     objCount = 0
+        #     objNames = set()
+        #     objDict = {}
+        #     for line in detections:
+        #         objCount += 1
+        #         if line[0] not in objNames:
+        #             objNames.add(line[0])
+        #             objDict[line[0]] = 1
+        #         else:
+        #             objDict[line[0]] += 1
+        #     showTxt = "图片中共有" + str(objCount) + "个物体\n其中"
+        #     for name in objDict:
+        #         showTxt += name
+        #         showTxt += "共"
+        #         showTxt += str(objDict[name])
+        #         showTxt += "个\n"
+
+            # self.tableWidget.setText(showTxt)
 
     # 本页面UI格式控制
     def __setUIStyle(self):

@@ -41,6 +41,7 @@ class DetectImage(QThread):
 
         self.DetectImageSignal.emit(2,[0], {"0":0})
         detections = darknet.detect_image(network, class_names, image)
+        # del darknet
 
         self.DetectImageSignal.emit(3,detections, class_colors)
 
